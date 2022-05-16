@@ -2,7 +2,7 @@
 bankaccount* addTwo(bankaccount* l1, bankaccount* l2);
 bankaccount* sortList(bankaccount* head) 
 {
-    if (NULL == head || NULL == head->next) return head;
+    if (head == NULL || head->next== NULL) return head;
 
     bankaccount* pre = head, * low = head, * fast = head;
     while (fast && fast->next)
@@ -12,7 +12,6 @@ bankaccount* sortList(bankaccount* head)
         fast = fast->next->next;
     }
     pre->next = nullptr;
-
     return addTwo(sortList(head), sortList(low));
 }
 bankaccount* addTwo(bankaccount* l1, bankaccount* l2)

@@ -39,7 +39,6 @@ int main()
 		}
 	}
 	fs.close();
-	//添加字逐渐出来效果
 	showmenu(key);
 	key = sortList(key);
 	changeFile(key);
