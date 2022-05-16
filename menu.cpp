@@ -2,6 +2,8 @@
 #include"menu.h"
 #include"file.h"
 #include"bankaccount.h"
+#include<Windows.h>
+#include"writing.h"
 using namespace std;
 void menu1(bankaccount* key);
 void menu2(bankaccount* key);
@@ -9,12 +11,13 @@ void menu3(bankaccount* key);
 //增加初次使用的操作
 void showmenu(bankaccount *key)
 {
-	std::cout << "\t请输入你想进行的操作" << endl;
+	writing("\t请输入你想进行的操作");
 	std::cout << "******************************************************" << endl;
 	std::cout << "                请输入你要进行的操作                      " << endl;
 	std::cout << "                 1.注册账户                             " << endl;
 	std::cout << "                 2.登录账户                             " << endl;
 	std::cout << "                 3.删除账户                           " << endl;
+	std::cout << "                 4.退出系统                         " << endl;
 	std::cout << "******************************************************" << endl;
 	int typenum;
 	cin >> typenum;
@@ -22,15 +25,28 @@ void showmenu(bankaccount *key)
 	{
 	case 1:
 	{
-		menu2(key);
+		menu2(key); cout << endl;
+		Sleep(700);
+		system("cls");
+		showmenu(key);
 	}break;
 	case 2:
-	{
-		menu1(key);
+	{ 
+		menu1(key); cout << endl;
+		Sleep(700);
+		system("cls");
+		showmenu(key);
 	}break;
 	case 3:
 	{
-		menu3(key);
+		menu3(key); cout << endl;
+		Sleep(700);
+		system("cls");
+		showmenu(key);
+	}break;
+	case 4:
+	{
+		break;
 	}break;
 	default:
 	{
@@ -40,7 +56,7 @@ void showmenu(bankaccount *key)
 }
 void showmenu2()
 {
-	std::cout << "\t请输入你想进行的操作" << endl;
+	writing("\t请输入你想进行的操作");
 	std::cout << "******************************************************" << endl;
 	std::cout << "                请输入你要进行的操作                      " << endl;
 	std::cout << "                 1.存款                             " << endl;
@@ -57,9 +73,9 @@ string PIN;
 string phone;
 string workp;
 string address;
-void menu3(bankaccount* key)
+void menu3(bankaccount* key)//删除
 {
-	cout << "\t请输入管理员密码" << endl;
+	writing("\t请输入管理员密码，返回上级目录请输入0" );
 	cin >> password;
 	if (password == "123")
 	{
@@ -69,15 +85,16 @@ void menu3(bankaccount* key)
 		if (delbankac(ID, key))cout << "删除成功" << endl;
 		else cout << "删除失败";
 	}
+	else if (password == "0")showmenu(key);
 	else
 	{
 		cout << "管理员密码错误" << endl;
 		menu3(key);
 	}
 }
-void menu2(bankaccount* key)
+void menu2(bankaccount* key)//
 {
-	cout << "\t请输入管理员密码" << endl;
+	writing("\t请输入管理员密码，返回上级目录请输入0");
 	cin >> password;
 	if (password == "123")
 	{
@@ -86,6 +103,7 @@ void menu2(bankaccount* key)
 		addbankac(name,PIN,phone,key,0,0,workp,address);
 		cout << "添加成功" << endl;
 	}
+	else if (password == "0")showmenu(key);
 	else
 	{
 		cout << "管理员密码错误" << endl;
@@ -150,13 +168,15 @@ void menu1(bankaccount* key)
 	case 5:
 	{
 		cout << "请输入你想修改的内容：姓名(name) 身份证号码(PIN) 工作地点(workp) 手机号码(phone) 地址(address)" << endl;
-		string temp,name;
-		cin >> name>>temp;
-		cinfo(temp,name,key);
+		string temp,word;
+		cin >> word;
+		cout << "请输入你想修改的值" << endl;
+		cin >> temp;
+		cinfo(temp,word,key);
+		cout << "修改成功" << endl;
 	}break;
 	default:
 	{
-
 		cout << "输入错误,请再次输入" << endl;
 		menu1(key);
 	}

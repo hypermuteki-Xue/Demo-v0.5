@@ -5,6 +5,7 @@
 #include"bankaccount.h"
 #include"bankoperate.h"
 #include"linksort.h"
+#include"writing.h"
 using namespace std;
 int main()
 {
@@ -22,9 +23,9 @@ int main()
 	fs.open("1.txt", ios::in);
 	if (!fs.is_open())
 	{
-		cout << "-----------------系统正在初始化-----------------" << endl;
-		cout << "\t第一次使用请先注册账户" << endl;
-		cout << "\t请输入你的姓名、身份证号码、手机号、单位、地址" << endl;
+		writing("-----------------系统正在初始化-----------------");
+		writing("\t第一次使用请先注册账户");
+		writing("\t请输入你的姓名、身份证号码、手机号、单位、地址");
 		cin >> name >> PIN >> phone>>workposition>>address;
 	    key = bankacinit( name,PIN,phone,remain,ID,workposition,address,opendate,closedate);
 	}

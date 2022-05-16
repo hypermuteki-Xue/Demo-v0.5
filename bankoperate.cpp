@@ -15,7 +15,6 @@ bankaccount* selbankac(string temp, bankaccount* head)
 {
 	if (temp[0] >= '0' && temp[0] <= '9')//查账号
 	{
-		cout << "查账号" << endl;
 		int t = stoi(temp);
 		while (head!= nullptr)
 		{
@@ -25,7 +24,6 @@ bankaccount* selbankac(string temp, bankaccount* head)
 	}
 	else if (temp[0] >= 'a' && temp[0] <= 'z' || temp[0] >= 'A' && temp[0] <= 'Z')
 	{
-		cout << "查名字" << endl;
 		while (head != nullptr)
 		{
 			if (head->getname() == temp)return head;
@@ -60,9 +58,10 @@ bool delbankac(int ID, bankaccount* head)
 }
 void cinfo(string temp, string word, bankaccount* key)
 {
-	if (word == "name")key->name = temp;
+	if (word == "name") { key->name = temp; cout << 1; }
 	else if (word == "PIN")key->PIN = temp;
 	else if (word == "workp")key->workposition = temp;
 	else if (word == "phone")key->workposition = temp;
 	else if (word == "address")key->address = temp;
+	else cout << "输入的值不存在" << endl;
 }
