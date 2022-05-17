@@ -9,6 +9,7 @@ void addbankac(string name, string PIN, string phone,bankaccount* head, int rema
 	bankaccount* node = new bankaccount(name, PIN, phone,remain,ID,workposition,address,opendate,closedate);
 	while (head->next != NULL)head = head->next;
 	head->next = node;
+	node->prev = head;
 	node->next = NULL;
 }
 bankaccount* selbankac(string temp, bankaccount* head)
@@ -43,13 +44,24 @@ bankaccount* bankacinit(string name, string PIN, string phone,int remain = 0, in
 	File.close();*/
 	return head;
 }
-bool delbankac(int ID, bankaccount* head)
+bool delbankac(int ID, bankaccount* &head)//É¾³ýÕË»§ºÅÂë
 {
 	while (head != NULL)
 	{
 		if (head->getID() == ID)
 		{
-			head->next = head->next->next;
+			bankaccount* temp = head;
+			if (head->prev == NULL)
+			{
+				head = head->next;
+			}
+			else if (head->next == NULL)
+			{
+				head->prev->next = NULL;
+			}
+			else { head->prev->next = head->next; }
+			delete temp;
+			temp = NULL;
 			return 1;
 		}
 		else head = head->next;
@@ -58,7 +70,7 @@ bool delbankac(int ID, bankaccount* head)
 }
 void cinfo(string temp, string word, bankaccount* key)
 {
-	if (word == "name") { key->name = temp; cout << 1; }
+	if (word == "name") { key->name = temp;  }
 	else if (word == "PIN")key->PIN = temp;
 	else if (word == "workp")key->workposition = temp;
 	else if (word == "phone")key->workposition = temp;

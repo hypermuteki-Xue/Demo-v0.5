@@ -80,6 +80,6 @@ public:
 		this->ID = ID;
 		if (ID == 0)this->ID =((rand()%90000)+10000);//Ëæ»ú
 	}
-	bankaccount* next;
-	bankaccount* prev;
+	bankaccount* next=NULL;
+	bankaccount* prev=NULL;
 };

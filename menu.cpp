@@ -7,9 +7,9 @@
 using namespace std;
 void menu1(bankaccount* key);
 void menu2(bankaccount* key);
-void menu3(bankaccount* key);
+void menu3(bankaccount* &key);
 //增加初次使用的操作
-void showmenu(bankaccount *key)
+void showmenu(bankaccount *&key)
 {
 	writing("\t请输入你想进行的操作");
 	std::cout << "******************************************************" << endl;
@@ -73,7 +73,7 @@ string PIN;
 string phone;
 string workp;
 string address;
-void menu3(bankaccount* key)//删除
+void menu3(bankaccount* &key)//删除
 {
 	writing("\t请输入管理员密码，返回上级目录请输入0" );
 	cin >> password;
@@ -82,6 +82,7 @@ void menu3(bankaccount* key)//删除
 		cout << "请输入你想删除账户的ID" << endl;
 		int ID;
 		cin >> ID;
+		bankaccount** temp = &key;
 		if (delbankac(ID, key))cout << "删除成功" << endl;
 		else cout << "删除失败";
 	}
@@ -92,7 +93,7 @@ void menu3(bankaccount* key)//删除
 		menu3(key);
 	}
 }
-void menu2(bankaccount* key)//
+void menu2(bankaccount* key)//添加结点
 {
 	writing("\t请输入管理员密码，返回上级目录请输入0");
 	cin >> password;
@@ -144,7 +145,6 @@ void menu1(bankaccount* key)
 			cout << "取款成功" << endl;
 		}
 		else cout << "对不起您的余额不足" << endl;
-
 	}break;
 	case 3:
 	{
