@@ -16,8 +16,8 @@ bankaccount* sortList(bankaccount* head)
 }
 bankaccount* addTwo(bankaccount* l1, bankaccount* l2)
 {
-    if (NULL == l1) return l2;
-    if (NULL == l2) return l1;
+    if (l1 == NULL) return l2;
+    if (l2 == NULL) return l1;
     if (l1->getremain() < l2->getremain())
     {
         l1->next = addTwo(l1->next, l2);

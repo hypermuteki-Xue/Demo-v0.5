@@ -1,7 +1,17 @@
 #pragma once
 #include<cstring>
 #include<string>
+#include<time.h>
 using namespace std;
+inline std::string getTime() {
+	time_t timep;
+	time(&timep);
+	char tmp[64];
+	struct tm nowTime;
+	localtime_s(&nowTime, &timep);
+	strftime(tmp, sizeof(tmp), "%Y-%m-%d", &nowTime);
+	return std::string(tmp);
+}
 class bankaccount
 {
 private:
@@ -65,7 +75,7 @@ public:
 		this->phone = phone;
 		this->workposition = workposition;
 		this->address = address;
-		this->opendate = opendate;
+		this->opendate = getTime();
 		this->closedate = closedate;
 		this->ID = ID;
 		if (ID == 0)this->ID =((rand()%90000)+10000);//Ëæ»ú
