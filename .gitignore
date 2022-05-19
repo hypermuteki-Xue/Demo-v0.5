@@ -75,3 +75,8 @@
 /.vs/Demo v0.5/v17/ipch/AutoPCH/e525abac043ebed3/ADDRESS.ipch
 /.vs/Demo v0.5/v17/ipch/AutoPCH/e5bb7a7c0cf4ba09/FILE.ipch
 /x64/Debug/bankoperate.obj.enc
+/x64/Debug/Demo v0.8.exe.recipe
+/x64/Debug/Demo v0.8.ilk
+/x64/Debug/Demo v0.8.pdb
+*.tlog
+*.ipch

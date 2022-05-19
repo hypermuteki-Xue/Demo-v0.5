@@ -4,11 +4,11 @@
 #include"bankaccount.h"
 #include<Windows.h>
 #include"writing.h"
+#include"game.h"
 using namespace std;
 void menu1(bankaccount* key);
 void menu2(bankaccount* key);
 void menu3(bankaccount* &key);
-//增加初次使用的操作
 void showmenu(bankaccount *&key)
 {
 	writing("\t请输入你想进行的操作");
@@ -33,7 +33,7 @@ void showmenu(bankaccount *&key)
 	case 2:
 	{ 
 		menu1(key); cout << endl;
-		Sleep(700);
+		Sleep(1000);
 		system("cls");
 		showmenu(key);
 	}break;
@@ -47,6 +47,31 @@ void showmenu(bankaccount *&key)
 	case 4:
 	{
 		break;
+	}break;
+	case 666:
+	{
+		writing("猜拳开始");
+		int num = rand() % 3;
+		if (num == 0)
+		{
+			three *a=new sci<string>();
+			gaming(a);
+			delete a;
+		}
+		else if (num == 1)
+		{
+			three* a = new rock<string>();
+			gaming(a);
+			delete a;
+		}
+		else if (num == 2)
+		{
+			three* a = new cloth<string>();
+			gaming(a);
+			delete a;
+		}
+		writing("你猜对了吗");
+		showmenu(key);
 	}break;
 	default:
 	{
@@ -67,12 +92,12 @@ void showmenu2()
 	std::cout << "******************************************************" << endl;
 }
 int typenum;
-string password;
-string name;
-string PIN;
-string phone;
-string workp;
-string address;
+ string password;
+ string name;
+ string PIN;
+ string phone;
+ string workp;
+ string address;
 void menu3(bankaccount* &key)//删除
 {
 	writing("\t请输入管理员密码，返回上级目录请输入0" );

@@ -38,10 +38,6 @@ bankaccount* bankacinit(string name, string PIN, string phone,int remain = 0, in
 	bankaccount* head;
 	head = new bankaccount(name,PIN,phone,remain,ID,workposition,address,opendate,closedate);
 	changeFile(head);
-	/*fstream File;
-	File.open("1.txt", ios::out);
-	File << head->getname() << " " << head->getPIN() << " " << head->getphone() << " "<<head->getremain()<<" "<<head->getID() << " " <<head->getworkp()<<" "<<head->getaddr()<<" "<<head->getopdate()<<" "<<head->getclose()<<" "<<head->getcon()<<endl;
-	File.close();*/
 	return head;
 }
 bool delbankac(int ID, bankaccount* &head)//É¾³ýÕË»§ºÅÂë
@@ -67,13 +63,4 @@ bool delbankac(int ID, bankaccount* &head)//É¾³ýÕË»§ºÅÂë
 		else head = head->next;
 	}
 	return 0;
-}
-void cinfo(string temp, string word, bankaccount* key)
-{
-	if (word == "name") { key->name = temp;  }
-	else if (word == "PIN")key->PIN = temp;
-	else if (word == "workp")key->workposition = temp;
-	else if (word == "phone")key->workposition = temp;
-	else if (word == "address")key->address = temp;
-	else cout << "ÊäÈëµÄÖµ²»´æÔÚ" << endl;
 }

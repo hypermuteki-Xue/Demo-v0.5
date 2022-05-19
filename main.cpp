@@ -35,6 +35,7 @@ int main()
 	}
 	else
 	{
+		string name = "NULL";
 		string PIN = "NULL";
 		string workposition = "NULL";
 		string phone = "NULL";
@@ -43,7 +44,6 @@ int main()
 		string opendate = "NULL";
 		string closedate = "NULL";
 		int ID = 0;
-		string name="NULL";
 		fs >> name>>PIN>>phone>>remain>>ID>>workposition>>address>>opendate>>closedate;
 		if (fs.eof())
 		{

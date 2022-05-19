@@ -2,6 +2,7 @@
 #include<cstring>
 #include<string>
 #include<time.h>
+#include<iostream>
 using namespace std;
 inline std::string getTime() {
 	time_t timep;
@@ -12,10 +13,9 @@ inline std::string getTime() {
 	strftime(tmp, sizeof(tmp), "%Y-%m-%d", &nowTime);
 	return std::string(tmp);
 }
-class bankaccount
+class banker
 {
-private:
-	friend void cinfo(string temp, string word, bankaccount*key);
+protected:
 	string name;
 	string PIN;
 	string workposition;
@@ -26,6 +26,33 @@ private:
 	string closedate;
 	int ID;
 	int condition;
+	banker(string name, string PIN, string phone, int remain = 0, int ID = 0, string workposition = "NULL", string address = "NULL", string opendate = "NULL", string closedate = "NULL")
+	{
+		this->name = name;
+		this->PIN = PIN;
+		this->remain = remain;
+		this->phone = phone;
+		this->workposition = workposition;
+		this->address = address;
+		this->opendate = getTime();
+		this->closedate = closedate;
+		this->ID = ID;
+		if (ID == 0)this->ID = ((rand() % 90000) + 10000);//随机
+	}
+};
+class bankaccount:protected banker//继承
+{
+private:
+	template<typename T>
+	friend void cinfo(T temp, T word, bankaccount* key)
+	{
+		if (word == "name") { key->name = temp; }
+		else if (word == "PIN")key->PIN = temp;
+		else if (word == "workp")key->workposition = temp;
+		else if (word == "phone")key->workposition = temp;
+		else if (word == "address")key->address = temp;
+		else cout << "输入的值不存在" << endl;
+	}
 public:
 	const void changeremain(int a) 
 	{
@@ -67,19 +94,7 @@ public:
 	{
 		return ID;
 	}
-	bankaccount(string name, string PIN,string phone,int remain=0,int ID = 0,string workposition="NULL", string address="NULL", string opendate="NULL", string closedate="NULL")
-	{
-		this->name = name;
-		this->PIN = PIN;
-		this->remain = remain;
-		this->phone = phone;
-		this->workposition = workposition;
-		this->address = address;
-		this->opendate = getTime();
-		this->closedate = closedate;
-		this->ID = ID;
-		if (ID == 0)this->ID =((rand()%90000)+10000);//随机
-	}
+	bankaccount(string name, string PIN,string phone,int remain,int ID ,string workposition, string address, string opendate, string closedate):banker (name, PIN,  phone, remain,ID, workposition, address,  opendate,  closedate){}
 	bankaccount* next=NULL;
 	bankaccount* prev=NULL;
 };
