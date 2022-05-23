@@ -7,6 +7,9 @@
 #include"linksort.h"
 #include"writing.h"
 using namespace std;
+//try catch ¶àÌ¬
+//map STL
+//ÃÜÂëÏµÍ³
 bankaccount* openning()
 {
 	string name = "NULL";

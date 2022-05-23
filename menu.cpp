@@ -4,11 +4,8 @@
 #include"bankaccount.h"
 #include<Windows.h>
 #include"writing.h"
-#include"game.h"
+#include"errors.h"
 using namespace std;
-void menu1(bankaccount* key);
-void menu2(bankaccount* key);
-void menu3(bankaccount* &key);
 void showmenu(bankaccount *&key)
 {
 	writing("\t请输入你想进行的操作");
@@ -19,65 +16,66 @@ void showmenu(bankaccount *&key)
 	std::cout << "                 3.删除账户                           " << endl;
 	std::cout << "                 4.退出系统                         " << endl;
 	std::cout << "******************************************************" << endl;
-	int typenum;
-	cin >> typenum;
-	switch (typenum)
+	try {
+		string typenum;
+		cin >> typenum;
+		if (typenum[0] >= '0' && typenum[0] <= '4' && typenum.length() == 1)throw stoi(typenum);
+		else if (typenum.length() != 1) { errors *a=new _length(); throw a; }
+		else if (typenum[0] >= '0' && typenum[0] <= '9') { errors* a = new _range(); throw a; }
+		else { errors* a = new _string(); throw a; }
+	}
+	catch(int e)
 	{
-	case 1:
-	{
-		menu2(key); cout << endl;
-		Sleep(700);
-		system("cls");
-		showmenu(key);
-	}break;
-	case 2:
-	{ 
-		menu1(key); cout << endl;
-		Sleep(1000);
-		system("cls");
-		showmenu(key);
-	}break;
-	case 3:
-	{
-		menu3(key); cout << endl;
-		Sleep(700);
-		system("cls");
-		showmenu(key);
-	}break;
-	case 4:
-	{
-		break;
-	}break;
-	case 666:
-	{
-		writing("猜拳开始");
-		int num = rand() % 3;
-		if (num == 0)
+     	switch (e)
 		{
-			three *a=new sci<string>();
-			gaming(a);
-			delete a;
-		}
-		else if (num == 1)
+		case 1:
 		{
-			three* a = new rock<string>();
-			gaming(a);
-			delete a;
-		}
-		else if (num == 2)
+			menu2(key); cout << endl;
+			Sleep(700);
+			system("cls");
+			showmenu(key);
+		}break;
+		case 2:
 		{
-			three* a = new cloth<string>();
-			gaming(a);
-			delete a;
+			menu1(key); cout << endl;
+			Sleep(1000);
+			system("cls");
+			showmenu(key);
+		}break;
+		case 3:
+		{
+			menu3(key); cout << endl;
+			Sleep(700);
+			system("cls");
+			showmenu(key);
+		}break;
+		case 4:
+		{
+			break;
+		}break;
+		case 0:
+		{
+			cout << R"(         _   _      _ _      __         __           _     _ 
+        | | | | ___| | | __  \ \       / / __   _ __| | __| |
+        | |_| |/ _ \ | |/ _ \ \ \ /\  / // _  \| '__| |/ _` |
+        |  _  |  __/ | | (_)   \ V  V  /  (_)  | |  | | (_| |
+        |_| |_|\___|_|_|\___/   \_/ \_/  \___ /|_|  |_|\__,_|)"<<endl<<endl;
+			showmenu(key);
+		}break;
+		default:
+		{
+			cout << "输入错误，请重新输入" << endl;
+			showmenu(key);
+		}break;
 		}
-		writing("你猜对了吗");
-		showmenu(key);
-	}break;
-	default:
+	}
+	catch (errors *a)
 	{
+		a->souterr();
+		delete a;
 		showmenu(key);
 	}
-	}
+	
 }
 void showmenu2()
 {
@@ -91,7 +89,6 @@ void showmenu2()
 	std::cout << "                 5.修改                             " << endl;
 	std::cout << "******************************************************" << endl;
 }
-int typenum;
  string password;
  string name;
  string PIN;
@@ -148,62 +145,78 @@ void menu1(bankaccount* key)
 		return;
 	}
 	showmenu2();
-	cin >> typenum;
-	switch (typenum)
-	{
-	case 1:
-	{
-		cout << "请输入你的存款数目" << endl;
-		int num;
-		cin >> num;
-		t->changeremain(num);
-		cout << "存款成功" << endl;
-	}break;
-	case 2:
-	{
-		cout << "请输入你想取款的数目" << endl;
-		int num;
-		cin >> num;
-		if (t->getremain() >= num)
-		{
-			t->changeremain(-num);
-			cout << "取款成功" << endl;
-		}
-		else cout << "对不起您的余额不足" << endl;
-	}break;
-	case 3:
-	{
-		cout << "请输入你想转账的ID,金额" << endl;
-		string ID; int money;
-		cin >> ID >> money;
-		bankaccount* a = selbankac(ID, key);
-		t->changeremain(-money);
-		a->changeremain(money);
-		cout << "转账成功" << endl;
-	}break;
-	case 4:
-	{
-		cout << "您的账户ID是：" << t->getID() << endl;
-		cout << "您的账户姓名是：" << t->getname() << endl;
-		cout << "您的账户身份证号码是：" << t->getPIN() << endl;
-		cout << "您的账户余额是：" << t->getremain() << endl;
-		cout << "您的开户日期是：" << t->getopdate() << endl;
-		cout << "您没有关户" << endl;
-	}break;
-	case 5:
-	{
-		cout << "请输入你想修改的内容：姓名(name) 身份证号码(PIN) 工作地点(workp) 手机号码(phone) 地址(address)" << endl;
-		string temp,word;
-		cin >> word;
-		cout << "请输入你想修改的值" << endl;
-		cin >> temp;
-		cinfo(temp,word,key);
-		cout << "修改成功" << endl;
-	}break;
-	default:
-	{
-		cout << "输入错误,请再次输入" << endl;
-		menu1(key);
+	try {
+		string typenum;
+		cin >> typenum;
+		if (typenum[0] >= '0' && typenum[0] <= '4' && typenum.length() == 1)throw stoi(typenum);
+		else if (typenum.length() != 1) { errors* a = new _length(); throw a; }
+		else if (typenum[0] >= '0' && typenum[0] <= '9') { errors* a = new _range(); throw a; }
+		else { errors* a = new _string(); throw a; }
 	}
+	catch (int e)
+	{
+		switch (e)
+		{
+		case 1:
+		{
+			cout << "请输入你的存款数目" << endl;
+			int num;
+			cin >> num;
+			t->changeremain(num);
+			cout << "存款成功" << endl;
+		}break;
+		case 2:
+		{
+			cout << "请输入你想取款的数目" << endl;
+			int num;
+			cin >> num;
+			if (t->getremain() >= num)
+			{
+				t->changeremain(-num);
+				cout << "取款成功" << endl;
+			}
+			else cout << "对不起您的余额不足" << endl;
+		}break;
+		case 3:
+		{
+			cout << "请输入你想转账的ID,金额" << endl;
+			string ID; int money;
+			cin >> ID >> money;
+			bankaccount* a = selbankac(ID, key);
+			t->changeremain(-money);
+			a->changeremain(money);
+			cout << "转账成功" << endl;
+		}break;
+		case 4:
+		{
+			cout << "您的账户ID是：" << t->getID() << endl;
+			cout << "您的账户姓名是：" << t->getname() << endl;
+			cout << "您的账户身份证号码是：" << t->getPIN() << endl;
+			cout << "您的账户余额是：" << t->getremain() << endl;
+			cout << "您的开户日期是：" << t->getopdate() << endl;
+			cout << "您没有关户" << endl;
+		}break;
+		case 5:
+		{
+			cout << "请输入你想修改的内容：姓名(name) 身份证号码(PIN) 工作地点(workp) 手机号码(phone) 地址(address)" << endl;
+			string temp, word;
+			cin >> word;
+			cout << "请输入你想修改的值" << endl;
+			cin >> temp;
+			cinfo(temp, word, key);
+			cout << "修改成功" << endl;
+		}break;
+		default:
+		{
+			cout << "输入错误,请再次输入" << endl;
+			menu1(key);
+		}
+		}
+	}
+	catch (errors* a)
+	{
+		a->souterr();
+		delete a;
+		menu1(key);
 	}
 }
