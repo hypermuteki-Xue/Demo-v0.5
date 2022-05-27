@@ -18,7 +18,7 @@ class _length :public errors
 public:
 	void souterr()
 	{
-		std::cout << "输入了错误长度的数字" << std::endl;
+		std::cout << "输入了错误长度的字符" << std::endl;
 	}
 };
 class _range :public errors

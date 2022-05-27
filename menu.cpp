@@ -5,75 +5,81 @@
 #include<Windows.h>
 #include"writing.h"
 #include"errors.h"
+#include<setjmp.h>
 using namespace std;
+int Password::times = 0;//不在这里定义会报错
+jmp_buf env;
 void showmenu(bankaccount *&key)
 {
-	writing("\t请输入你想进行的操作");
-	std::cout << "******************************************************" << endl;
-	std::cout << "                请输入你要进行的操作                      " << endl;
-	std::cout << "                 1.注册账户                             " << endl;
-	std::cout << "                 2.登录账户                             " << endl;
-	std::cout << "                 3.删除账户                           " << endl;
-	std::cout << "                 4.退出系统                         " << endl;
-	std::cout << "******************************************************" << endl;
-	try {
-		string typenum;
-		cin >> typenum;
-		if (typenum[0] >= '0' && typenum[0] <= '4' && typenum.length() == 1)throw stoi(typenum);
-		else if (typenum.length() != 1) { errors *a=new _length(); throw a; }
-		else if (typenum[0] >= '0' && typenum[0] <= '9') { errors* a = new _range(); throw a; }
-		else { errors* a = new _string(); throw a; }
-	}
-	catch(int e)
+	if (setjmp(env) == 2||true)
 	{
-     	switch (e)
+		label:writing("\t请输入你想进行的操作");
+		std::cout << "******************************************************" << endl;
+		std::cout << "                请输入你要进行的操作                      " << endl;
+		std::cout << "                 1.注册账户                             " << endl;
+		std::cout << "                 2.登录账户                             " << endl;
+		std::cout << "                 3.删除账户                           " << endl;
+		std::cout << "                 4.退出系统                         " << endl;
+		std::cout << "******************************************************" << endl;
+		try {
+			string typenum;
+			cin >> typenum;
+			if (typenum[0] >= '0' && typenum[0] <= '4' && typenum.length() == 1)throw stoi(typenum);
+			else if (typenum.length() != 1) { errors* a = new _length(); throw a; }
+			else if (typenum[0] >= '0' && typenum[0] <= '9') { errors* a = new _range(); throw a; }
+			else { errors* a = new _string(); throw a; }
+		}
+		catch (int e)
 		{
-		case 1:
-		{
-			menu2(key); cout << endl;
-			Sleep(700);
-			system("cls");
-			showmenu(key);
-		}break;
-		case 2:
-		{
-			menu1(key); cout << endl;
-			Sleep(1000);
-			system("cls");
-			showmenu(key);
-		}break;
-		case 3:
-		{
-			menu3(key); cout << endl;
-			Sleep(700);
-			system("cls");
-			showmenu(key);
-		}break;
-		case 4:
-		{
-			break;
-		}break;
-		case 0:
-		{
-			cout << R"(         _   _      _ _      __         __           _     _ 
+			switch (e)
+			{
+			case 1:
+			{
+				menu2(key); cout << endl;
+				Sleep(700);
+				system("cls");
+				goto label;
+			}break;
+			case 2:
+			{
+				menu1(key); cout << endl;
+				Sleep(1000);
+				system("cls");
+				goto label;
+			}break;
+			case 3:
+			{
+				menu3(key); cout << endl;
+				Sleep(700);
+				system("cls");
+				goto label;
+			}break;
+			case 4:
+			{
+				return;
+			}break;
+			case 0:
+			{
+				cout << R"(         _   _      _ _      __         __           _     _ 
         | | | | ___| | | __  \ \       / / __   _ __| | __| |
         | |_| |/ _ \ | |/ _ \ \ \ /\  / // _  \| '__| |/ _` |
         |  _  |  __/ | | (_)   \ V  V  /  (_)  | |  | | (_| |
-        |_| |_|\___|_|_|\___/   \_/ \_/  \___ /|_|  |_|\__,_|)"<<endl<<endl;
-			showmenu(key);
-		}break;
-		default:
-		{
-			cout << "输入错误，请重新输入" << endl;
-			showmenu(key);
-		}break;
+        |_| |_|\___|_|_|\___/   \_/ \_/  \___ /|_|  |_|\__,_|)" << endl << endl;
+				longjmp(env, 2);
+			}break;
+			default:
+			{
+				cout << "输入错误，请重新输入" << endl;
+				longjmp(env, 2);
+			}break;
+			}
 		}
-	}
-	catch (errors *a)
-	{
-		a->souterr();
-		delete a;
-		showmenu(key);
+		catch (errors* a)
+		{
+			a->souterr();
+			delete a;
+			longjmp(env, 2);
+		}
 	}
 	
 }
@@ -89,7 +95,7 @@ void showmenu2()
 	std::cout << "                 5.修改                             " << endl;
 	std::cout << "******************************************************" << endl;
 }
- string password;
+Password password;
  string name;
  string PIN;
  string phone;
@@ -97,9 +103,11 @@ void showmenu2()
  string address;
 void menu3(bankaccount* &key)//删除
 {
+label:
+	if (Password::times > 3) { cout << "您已输入太多错误次数" << endl; return; };
 	writing("\t请输入管理员密码，返回上级目录请输入0" );
 	cin >> password;
-	if (password == "123")
+	if (password.con==1)
 	{
 		cout << "请输入你想删除账户的ID" << endl;
 		int ID;
@@ -108,29 +116,33 @@ void menu3(bankaccount* &key)//删除
 		if (delbankac(ID, key))cout << "删除成功" << endl;
 		else cout << "删除失败";
 	}
-	else if (password == "0")showmenu(key);
+	else if (password.con==0)longjmp(env,2);
 	else
 	{
-		cout << "管理员密码错误" << endl;
-		menu3(key);
+		Password::times++;
+		cout << "密码输入错误" << Password::times << "次" << endl;
+		goto label;
 	}
 }
 void menu2(bankaccount* key)//添加结点
 {
+label:
+	if (Password::times > 3) { cout << "您已输入太多错误次数" << endl; return; };
 	writing("\t请输入管理员密码，返回上级目录请输入0");
 	cin >> password;
-	if (password == "123")
+	if (password .con==1)
 	{
 		cout << "\t请输入你的姓名、身份证号码、手机号、单位、地址" << endl;
 		cin >> name >> PIN >> phone >> workp >> address;
 		addbankac(name,PIN,phone,key,0,0,workp,address);
 		cout << "添加成功" << endl;
 	}
-	else if (password == "0")showmenu(key);
+	else if (password.con==0)longjmp(env, 2);//试过showmenu
 	else
 	{
-		cout << "管理员密码错误" << endl;
-		menu2(key);
+		Password::times++;
+		cout << "密码输入错误"<<Password::times<<"次" << endl;
+		goto label;
 	}
 }
 void menu1(bankaccount* key)
@@ -144,11 +156,11 @@ void menu1(bankaccount* key)
 		cout << "不存在此账号" << endl;
 		return;
 	}
-	showmenu2();
+	label:showmenu2();
 	try {
 		string typenum;
 		cin >> typenum;
-		if (typenum[0] >= '0' && typenum[0] <= '4' && typenum.length() == 1)throw stoi(typenum);
+		if (typenum[0] >= '0' && typenum[0] <= '5' && typenum.length() == 1)throw stoi(typenum);
 		else if (typenum.length() != 1) { errors* a = new _length(); throw a; }
 		else if (typenum[0] >= '0' && typenum[0] <= '9') { errors* a = new _range(); throw a; }
 		else { errors* a = new _string(); throw a; }
@@ -209,7 +221,7 @@ void menu1(bankaccount* key)
 		default:
 		{
 			cout << "输入错误,请再次输入" << endl;
-			menu1(key);
+			goto label;
 		}
 		}
 	}
@@ -217,6 +229,6 @@ void menu1(bankaccount* key)
 	{
 		a->souterr();
 		delete a;
-		menu1(key);
+		goto label;
 	}
 }

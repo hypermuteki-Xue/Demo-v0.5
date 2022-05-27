@@ -10,6 +10,7 @@ using namespace std;
 //try catch 多态
 //map STL
 //密码系统
+//重载>>运算符
 bankaccount* openning()
 {
 	string name = "NULL";
@@ -64,7 +65,7 @@ int main()
 	}
 	fs.close();
 	showmenu(key);
-	key = sortList(key);
+	label:key = sortList(key);
 	changeFile(key);
 	while (key != NULL)
 	{

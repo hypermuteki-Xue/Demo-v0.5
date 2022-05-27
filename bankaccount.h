@@ -1,10 +1,13 @@
 #pragma once
+#ifndef MY_H_FILE
+#define MY_H_FILE
 #include<cstring>
 #include<string>
 #include<time.h>
 #include<iostream>
 using namespace std;
-inline std::string getTime() {
+inline std::string getTime()//²»¼Ólink2005
+{ 
 	time_t timep;
 	time(&timep);
 	char tmp[64];
@@ -12,6 +15,29 @@ inline std::string getTime() {
 	localtime_s(&nowTime, &timep);
 	strftime(tmp, sizeof(tmp), "%Y-%m-%d", &nowTime);
 	return std::string(tmp);
+}
+class Password
+{
+public:
+	Password() {}
+	const string getpass()const
+	{
+		return pass;
+	}
+    static int times;//link2001
+	int con=0;
+protected:
+	const string pass="123456";
+};
+inline istream& operator >>(istream& cin, Password& a)
+{
+	string b;
+	cin >> b;
+	if (b == a.getpass())a.con = 1;
+	else if (b == "0")a.con = 0;
+	else a.con = -1;
+	return cin;
+
 }
 class banker
 {
@@ -94,7 +120,8 @@ public:
 	{
 		return ID;
 	}
-	bankaccount(string name, string PIN,string phone,int remain,int ID ,string workposition, string address, string opendate, string closedate):banker (name, PIN,  phone, remain,ID, workposition, address,  opendate,  closedate){}
+	bankaccount(string name, string PIN, string phone, int remain, int ID, string workposition, string address, string opendate, string closedate) :banker(name, PIN, phone, remain, ID, workposition, address, opendate, closedate){ }
 	bankaccount* next=NULL;
 	bankaccount* prev=NULL;
 };
+#endif
